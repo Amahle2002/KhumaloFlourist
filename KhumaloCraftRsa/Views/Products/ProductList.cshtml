@@ -1,0 +1,103 @@
+﻿@model IEnumerable<KhumaloCraftRsa.Models.Product>
+
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<h1 class="page-title" style="color: #00f;">Product List</h1>
+
+<div class="product-grid">
+    @foreach (var product in Model)
+    {
+        <div class="product-container">
+            <img src="@product.ImageUrl" alt="@product.Name" />
+            <div class="product-details">
+                <p class="product-name" style="color: #00f;">@product.Name</p>
+                <p class="product-price" style="color: #00f;">Price: @product.Price</p>
+                <p class="product-category" style="color: #00f;">Category: @product.Category</p>
+                <p class="product-availability" style="color: #00f;">Availability: @product.Availability</p>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form asp-controller="MyCarts" asp-action="AddCart" method="post">
+                        <input type="hidden" name="productId" value="@product.ProductId" />
+                        <button type="submit" class="add-to-cart" style="background-color: #00f; color: #fff; border: 2px solid #00f;">Add to Cart</button>
+                    </form>
+                }
+                else
+                {
+                    <div>
+                        <p style="color: #00f;">Please <a href="/Identity/Account/Login" style="color: #00f;">login</a> to add items to your cart.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .page-title {
+        text-align: center;
+        color: #00f;
+        font-size: 2em;
+        margin-top: 20px;
+    }
+
+    .product-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .product-container {
+        border: 2px solid #00f;
+        background-color: #fff;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 220px;
+        transition: transform 0.3s ease;
+    }
+
+        .product-container:hover {
+            transform: scale(1.05);
+        }
+
+        .product-container img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+            .product-container img:hover {
+                transform: scale(1.1);
+            }
+
+    .product-details {
+        text-align: center;
+    }
+
+    .product-name, .product-price, .product-category, .product-availability {
+        margin: 5px 0;
+    }
+
+    .add-to-cart {
+        background-color: #00f; /* Change the background color to blue */
+        color: #fff;
+        border: 2px solid #00f; /* Keep the border color as blue */
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .add-to-cart:hover {
+            background-color: #fff; /* Change the background color on hover to white */
+            color: #00f; /* Change the text color on hover to blue */
+        }
+</style>
